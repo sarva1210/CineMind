@@ -5,7 +5,10 @@ const authApi = {
   register: async (userData) => {
     try {
       const response = await axiosInstance.post('/auth/register', userData);
-      return response.data;
+      const { token, user } = response.data.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      return { token, user };
     } catch (error) {
       throw error.response?.data || error.message;
     }
@@ -15,7 +18,7 @@ const authApi = {
   login: async (credentials) => {
     try {
       const response = await axiosInstance.post('/auth/login', credentials);
-      const { token, user } = response.data;
+      const { token, user } = response.data.data;
       
       // Store token and user in localStorage
       localStorage.setItem('token', token);
@@ -36,18 +39,18 @@ const authApi = {
   // Get current user profile
   getProfile: async () => {
     try {
-      const response = await axiosInstance.get('/auth/profile');
-      return response.data;
+      const response = await axiosInstance.get('/users/profile');
+      return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
 
-  // Update user profile
-  updateProfile: async (userData) => {
+  // Update user preferences
+  updatePreferences: async (preferences) => {
     try {
-      const response = await axiosInstance.put('/auth/profile', userData);
-      const user = response.data;
+      const response = await axiosInstance.put('/users/preferences', preferences);
+      const user = response.data.data;
       localStorage.setItem('user', JSON.stringify(user));
       return user;
     } catch (error) {
