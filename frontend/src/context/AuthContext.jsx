@@ -79,12 +79,12 @@ export const AuthProvider = ({ children }) => {
     setError(null);
   }, []);
 
-  // Update user profile
-  const updateProfile = useCallback(async (userData) => {
+  // Update user preferences
+  const updatePreferences = useCallback(async (preferences) => {
     setLoading(true);
     setError(null);
     try {
-      const updatedUser = await authApi.updateProfile(userData);
+      const updatedUser = await authApi.updatePreferences(preferences);
       setUser(updatedUser);
       return updatedUser;
     } catch (err) {
@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    updateProfile,
+    updatePreferences,
     getProfile,
     isAuthenticated: !!token && !!user,
   };
