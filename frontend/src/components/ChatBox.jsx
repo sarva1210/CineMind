@@ -4,6 +4,7 @@ import { AiOutlineSend } from 'react-icons/ai';
 import aiApi from '../services/api/aiApi';
 import Loader from './Loader';
 
+
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
