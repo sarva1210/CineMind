@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 
+
 export default function Loader({ fullScreen = true }) {
   const containerClass = fullScreen
     ? 'fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur z-50'
