@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require('google-generative-ai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const User = require('../user/userModel');
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
 

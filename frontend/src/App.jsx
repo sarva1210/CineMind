@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { NotificationProvider } from './context/NotificationContext';
 import Navbar from './components/Navbar';
+import NotificationContainer from './components/NotificationContainer';
 
 // Pages
 import Home from './pages/Home';
@@ -16,10 +18,12 @@ import Profile from './pages/Profile';
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <AuthProvider>
-          <div className="bg-black text-white min-h-screen dark:bg-gray-900 dark:text-white transition-colors">
-            <Navbar />
+      <NotificationProvider>
+        <Router>
+          <AuthProvider>
+            <div className="bg-black text-white min-h-screen dark:bg-gray-900 dark:text-white transition-colors">
+              <NotificationContainer />
+              <Navbar />
 
             <Routes>
               <Route path="/" element={<Home />} />
@@ -34,9 +38,10 @@ function App() {
               {/* Catch all - redirect to home */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </div>
-        </AuthProvider>
-      </Router>
+            </div>
+          </AuthProvider>
+        </Router>
+      </NotificationProvider>
     </ThemeProvider>
   );
 }

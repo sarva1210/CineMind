@@ -1,8 +1,7 @@
 const rateLimit = require('express-rate-limit');
-const RedisStore = require('rate-limit-redis');
 const redis = require('redis');
 
-// Create Redis client if available
+// Create Redis client if available (optional)
 let redisClient = null;
 try {
   redisClient = redis.createClient({
@@ -24,7 +23,6 @@ const apiLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
-  store: redisClient ? new RedisStore({ client: redisClient }) : undefined,
 });
 
 // Auth rate limiter (stricter)
@@ -33,7 +31,6 @@ const authLimiter = rateLimit({
   max: 5, // 5 attempts per 15 minutes
   message: 'Too many login/register attempts, please try again later',
   skipSuccessfulRequests: true,
-  store: redisClient ? new RedisStore({ client: redisClient }) : undefined,
 });
 
 // Rating submission limiter
@@ -41,7 +38,6 @@ const ratingLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 20, // 20 ratings per hour
   message: 'Too many ratings submitted, please try again later',
-  store: redisClient ? new RedisStore({ client: redisClient }) : undefined,
 });
 
 // Comment limiter
@@ -49,7 +45,6 @@ const commentLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 30, // 30 comments per hour
   message: 'Too many comments, please try again later',
-  store: redisClient ? new RedisStore({ client: redisClient }) : undefined,
 });
 
 module.exports = {

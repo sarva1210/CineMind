@@ -1,10 +1,9 @@
 // API Response Utility
-const apiResponse = (statusCode, data, message = '', success = true) => {
+const apiResponse = (success, message = '', data = null) => {
   return {
-    statusCode,
-    data,
-    message,
     success,
+    message,
+    data,
   };
 };
 
