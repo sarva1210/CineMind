@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import ChatBox from '../components/ChatBox';
 
+
 export default function Assistant() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
