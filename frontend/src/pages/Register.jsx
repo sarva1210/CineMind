@@ -5,6 +5,7 @@ import { AiOutlineUser, AiOutlineMail, AiOutlineLock, AiOutlineEye, AiOutlineEye
 import { useAuth } from '../hooks/useAuth';
 import Loader from '../components/Loader';
 
+
 export default function Register() {
   const [formData, setFormData] = useState({
     username: '',
