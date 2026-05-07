@@ -67,6 +67,7 @@ export default function Register() {
 
   if (loading) return <Loader />;
 
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-900/20 to-black flex items-center justify-center px-4 pt-20 pb-10">
       {/* Background Elements */}
