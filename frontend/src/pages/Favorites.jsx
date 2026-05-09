@@ -43,6 +43,7 @@ export default function Favorites() {
 
   if (loading) return <Loader />;
 
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-900/10 to-black pt-20">
       {/* Header */}
