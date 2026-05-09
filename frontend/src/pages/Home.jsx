@@ -6,6 +6,7 @@ import MovieCard from '../components/MovieCard';
 import Loader from '../components/Loader';
 import movieApi from '../services/api/movieApi';
 
+
 export default function Home() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
