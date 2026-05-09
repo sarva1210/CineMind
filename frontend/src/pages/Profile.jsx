@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import Loader from '../components/Loader';
 import favoritesApi from '../services/api/favoritesApi';
 
+
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [watchHistory, setWatchHistory] = useState([]);
