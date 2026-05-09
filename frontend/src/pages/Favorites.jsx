@@ -7,6 +7,7 @@ import MovieCard from '../components/MovieCard';
 import Loader from '../components/Loader';
 import favoritesApi from '../services/api/favoritesApi';
 
+
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
