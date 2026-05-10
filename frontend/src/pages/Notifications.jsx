@@ -45,7 +45,7 @@ export default function NotificationsPage() {
     }
   };
 
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
