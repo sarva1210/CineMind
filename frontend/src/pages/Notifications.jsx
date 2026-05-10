@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import notificationApi from '../services/api/notificationApi';
 import SkeletonLoader from '../components/SkeletonLoader';
 
+
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
