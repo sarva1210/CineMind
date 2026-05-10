@@ -6,6 +6,7 @@ import MovieCard from '../components/MovieCard';
 import Loader from '../components/Loader';
 import movieApi from '../services/api/movieApi';
 
+
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
