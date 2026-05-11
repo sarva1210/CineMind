@@ -36,6 +36,7 @@ const authApi = {
     localStorage.removeItem('user');
   },
 
+  
   // Get current user profile
   getProfile: async () => {
     try {
@@ -45,6 +46,7 @@ const authApi = {
       throw error.response?.data || error.message;
     }
   },
+
 
   // Update user preferences
   updatePreferences: async (preferences) => {
