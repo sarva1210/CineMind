@@ -13,6 +13,7 @@ const aiApi = {
     }
   },
 
+  
   // Get AI movie recommendations (uses chat endpoint)
   getRecommendations: async (preferences) => {
     try {
