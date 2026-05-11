@@ -13,6 +13,7 @@ const movieApi = {
     }
   },
 
+
   // Get popular movies
   getPopular: async (page = 1) => {
     try {
