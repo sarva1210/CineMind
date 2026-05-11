@@ -11,6 +11,7 @@ const favoritesApi = {
     }
   },
 
+
   // Add movie to favorites
   addFavorite: async (movieData) => {
     try {
