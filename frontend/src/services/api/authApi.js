@@ -14,6 +14,7 @@ const authApi = {
     }
   },
 
+  
   // Login user
   login: async (credentials) => {
     try {
@@ -30,13 +31,14 @@ const authApi = {
     }
   },
 
+
   // Logout user
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
 
-  
+
   // Get current user profile
   getProfile: async () => {
     try {
