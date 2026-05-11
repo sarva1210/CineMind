@@ -4,6 +4,7 @@ import watchlistApi from '../services/api/watchlistApi';
 import SkeletonLoader from '../components/SkeletonLoader';
 import MovieCard from '../components/MovieCard';
 
+
 export default function Watchlist() {
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
