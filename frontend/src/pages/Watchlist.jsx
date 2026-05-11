@@ -47,7 +47,7 @@ export default function Watchlist() {
     }
   };
 
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
