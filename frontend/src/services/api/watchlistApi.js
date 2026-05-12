@@ -8,7 +8,7 @@ export default {
     return axios.post(`${API_BASE}`, data).then((res) => res.data.data);
   },
 
-  
+
   // Get watchlist
   getWatchlist(status = null, page = 1) {
     return axios
