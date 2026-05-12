@@ -8,6 +8,7 @@ export default {
     return axios.post(`${API_BASE}`, { movieId, ...data }).then((res) => res.data.data);
   },
 
+
   // Get all ratings for a movie
   getMovieRatings(movieId, page = 1, sortBy = 'newest') {
     return axios
