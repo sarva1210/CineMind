@@ -16,6 +16,7 @@ export default {
       .then((res) => res.data.data);
   },
 
+  
   // Get user's rating for a movie
   getUserRating(movieId) {
     return axios.get(`${API_BASE}/user/${movieId}`).then((res) => res.data.data);
