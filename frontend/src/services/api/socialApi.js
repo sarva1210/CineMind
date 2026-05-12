@@ -8,6 +8,7 @@ export default {
     return axios.post(`${API_BASE}/${userId}/follow`).then((res) => res.data.data);
   },
 
+  
   // Unfollow a user
   unfollowUser(userId) {
     return axios.delete(`${API_BASE}/${userId}/follow`).then((res) => res.data);
