@@ -18,7 +18,6 @@ const watchlistRoutes = require('./modules/watchlist/watchlistRoutes');
 const notificationRoutes = require('./modules/notification/notificationRoutes');
 const twoFactorRoutes = require('./modules/twoFactor/twoFactorRoutes');
 
-// Initialize Express app
 const app = express();
 
 // Middleware
