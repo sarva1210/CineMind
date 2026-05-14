@@ -47,9 +47,4 @@ const commentLimiter = rateLimit({
   message: 'Too many comments, please try again later',
 });
 
-module.exports = {
-  apiLimiter,
-  authLimiter,
-  ratingLimiter,
-  commentLimiter,
-};
+module.exports = { apiLimiter, authLimiter, ratingLimiter, commentLimiter,};
