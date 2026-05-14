@@ -15,6 +15,7 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
+
 const validators = {
   // Auth validators
   register: [
