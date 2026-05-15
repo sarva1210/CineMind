@@ -19,7 +19,6 @@ const aiChat = async (req, res, next) => {
 
     // Create prompt for AI
     const prompt = `You are a helpful movie recommendation assistant. Based on the user's preferences and request, suggest movies.
-
 User's favorite genres: ${userGenres}
 User's message: "${message}"
 
