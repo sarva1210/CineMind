@@ -103,4 +103,4 @@ const isFavorite = async (req, res, next) => {
   }
 };
 
-module.exports = { addToFavorites, removeFromFavorites, getFavorites, isFavorite, };
+module.exports = { addToFavorites, removeFromFavorites, getFavorites, isFavorite };
