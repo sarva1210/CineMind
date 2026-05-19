@@ -29,6 +29,9 @@ const authSessionSchema = new mongoose.Schema(
 );
 
 // Remove expired sessions periodically
-authSessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+authSessionSchema.index(
+  { expiresAt: 1 }, 
+  { expireAfterSeconds: 0 }
+);
 
 module.exports = mongoose.model('AuthSession', authSessionSchema);
