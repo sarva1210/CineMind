@@ -32,6 +32,7 @@ const addToFavorites = async (req, res, next) => {
     await user.save();
 
     return sendSuccess(res, 200, user.favorites, 'Added to favorites');
+
   } catch (error) {
     next(error);
   }
@@ -56,6 +57,7 @@ const removeFromFavorites = async (req, res, next) => {
     await user.save();
 
     return sendSuccess(res, 200, user.favorites, 'Removed from favorites');
+
   } catch (error) {
     next(error);
   }
@@ -101,9 +103,4 @@ const isFavorite = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  addToFavorites,
-  removeFromFavorites,
-  getFavorites,
-  isFavorite,
-};
+module.exports = { addToFavorites, removeFromFavorites, getFavorites, isFavorite, };
