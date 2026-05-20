@@ -48,6 +48,8 @@ const movieSchema = new mongoose.Schema(
         tmdbId: Number,
       },
     ],
+    
+    // For simplicity, we can store streaming provider info directly in the movie document
     streamingProviders: [
       {
         provider: String,
