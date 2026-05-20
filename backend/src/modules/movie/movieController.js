@@ -141,6 +141,4 @@ const getTopRatedMovies = async (req, res, next) => {
   }
 };
 
-module.exports = { getTrendingMovies, searchMovies,
-  getMovieDetails, getMovieTrailer,
-  getPopularMovies, getTopRatedMovies };
+module.exports = { getTrendingMovies, searchMovies, getMovieDetails, getMovieTrailer, getPopularMovies, getTopRatedMovies };
