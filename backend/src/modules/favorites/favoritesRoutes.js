@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middleware/authMiddleware');
-const { addToFavorites, removeFromFavorites,
-  getFavorites, isFavorite, } = require('./favoritesController');
+const { addToFavorites, removeFromFavorites, getFavorites, isFavorite, } = require('./favoritesController');
 
 // GET /favorites - Get all favorites
 router.get('/', authMiddleware, getFavorites);
