@@ -34,6 +34,7 @@ const favoritesSchema = new mongoose.Schema(
 favoritesSchema.index({ userId: 1 });
 favoritesSchema.index({ 'movies.movieId': 1 });
 
+
 // Auto-update totalCount when movies array changes
 favoritesSchema.pre('save', function (next) {
   this.totalCount = this.movies.length;
