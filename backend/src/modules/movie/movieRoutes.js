@@ -5,9 +5,7 @@ const {
   searchMovies,
   getMovieDetails,
   getMovieTrailer,
-  getPopularMovies,
-  getTopRatedMovies,
-} = require('./movieController');
+  getPopularMovies, getTopRatedMovies } = require('./movieController');
 
 // GET /movies/trending - Get trending movies
 router.get('/trending', getTrendingMovies);
