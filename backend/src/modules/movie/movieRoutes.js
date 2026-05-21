@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getTrendingMovies, searchMovies,
-  getMovieDetails, getMovieTrailer,
-  getPopularMovies, getTopRatedMovies } = require('./movieController');
+const { getTrendingMovies, searchMovies,
+  getMovieDetails, getMovieTrailer, getPopularMovies, getTopRatedMovies } = require('./movieController');
 
 // GET /movies/trending - Get trending movies
 router.get('/trending', getTrendingMovies);
