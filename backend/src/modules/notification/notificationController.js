@@ -72,7 +72,6 @@ const notificationController = {
   async markAllAsRead(req, res, next) {
     try {
       const userId = req.user._id;
-
       await Notification.updateMany({ userId, isRead: false }, { isRead: true });
 
       res.status(200).json(apiResponse(true, 'All marked as read'));
