@@ -131,6 +131,5 @@ const deleteRating = async (req, res, next) => {
   }
 };
 
-module.exports = { submitRating,
-  getMovieRatings, getUserRating,
+module.exports = { submitRating, getMovieRatings, getUserRating,
   markHelpful, deleteRating };
