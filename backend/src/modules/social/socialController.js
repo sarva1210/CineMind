@@ -25,7 +25,6 @@ const socialController = {
         follower: currentUserId,
         following: userId,
       });
-
       await follow.save();
 
       res.status(201).json(apiResponse(true, 'User followed successfully', follow));
@@ -55,7 +54,7 @@ const socialController = {
     }
   },
 
-  // Get followers
+  // Get followers 
   async getFollowers(req, res, next) {
     try {
       const { userId } = req.params;
@@ -111,7 +110,7 @@ const socialController = {
     }
   },
 
-  // Check if following
+  // it Check if following
   async isFollowing(req, res, next) {
     try {
       const { userId } = req.params;
