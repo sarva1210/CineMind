@@ -94,9 +94,4 @@ const getWatchHistory = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getProfile,
-  updatePreferences,
-  addToWatchHistory,
-  getWatchHistory,
-};
+module.exports = { getProfile, updatePreferences, addToWatchHistory, getWatchHistory };
