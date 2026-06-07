@@ -1,7 +1,6 @@
 const express = require('express');
 const { twoFactorController } = require('./twoFactorController.js');
 const { authMiddleware } = require('../../middleware/authMiddleware.js');
-
 const router = express.Router();
 
 // Setup 2FA
