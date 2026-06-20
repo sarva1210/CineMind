@@ -1,37 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AiOutlineMenu, AiOutlineClose, AiOutlineUser } from 'react-icons/ai';
-import { BsSearch, BsStar, BsRobot } from 'react-icons/bs';
-import { useAuth } from '../hooks/useAuth';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { BsSearch, BsBookmark, BsRobot, BsHouseFill, BsHeartFill } from 'react-icons/bs';
+import { useSavedMovies } from '../context/SavedMoviesContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { favorites, watchLater } = useSavedMovies();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    setIsOpen(false);
-    navigate('/login');
-  };
-
   const navLinks = [
-    { name: 'Home', path: '/', icon: '🏠' },
+    { name: 'Home', path: '/', icon: <BsHouseFill /> },
     { name: 'Search', path: '/search', icon: <BsSearch /> },
-    { name: 'Favorites', path: '/favorites', icon: <BsStar /> },
-    { name: 'Assistant', path: '/assistant', icon: <BsRobot /> },
+    {
+      name: 'Favorites',
+      path: '/favorites',
+      icon: <BsHeartFill />,
+      badge: favorites.length > 0 ? favorites.length : null,
+    },
+    {
+      name: 'Watch Later',
+      path: '/watch-later',
+      icon: <BsBookmark />,
+      badge: watchLater.length > 0 ? watchLater.length : null,
+    },
+    { name: 'AI Assistant', path: '/assistant', icon: <BsRobot /> },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -49,14 +51,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              to="/"
-              className="flex items-center gap-2 cursor-pointer group"
-            >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link to="/" className="flex items-center gap-2 cursor-pointer group">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center font-bold text-white text-lg group-hover:shadow-lg group-hover:shadow-purple-500/50 transition-all">
                 🎬
               </div>
@@ -69,7 +65,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <motion.div key={link.path} whileHover={{ scale: 1.05 }}>
+              <motion.div key={link.path} whileHover={{ scale: 1.05 }} className="relative">
                 <Link
                   to={link.path}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
@@ -78,78 +74,31 @@ export default function Navbar() {
                       : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
                   }`}
                 >
-                  {typeof link.icon === 'string' ? link.icon : link.icon}
+                  {link.icon}
                   {link.name}
+                  {link.badge && (
+                    <span className="ml-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold min-w-[18px] text-center">
+                      {link.badge > 99 ? '99+' : link.badge}
+                    </span>
+                  )}
                 </Link>
               </motion.div>
             ))}
           </div>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-3 pr-2">
-            {isAuthenticated ? (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to="/profile"
-                  className={`p-3 rounded-full transition-all ${
-                    isActive('/profile')
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                      : 'hover:bg-gray-800/50 text-gray-300 hover:text-white'
-                  }`}
-                >
-                  <AiOutlineUser className="w-6 h-6" />
-                </Link>
-              </motion.div>
-            ) : null}
-
-            {/* Mobile Menu Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-800/50 transition-colors text-white"
-            >
-              {isOpen ? (
-                <AiOutlineClose className="w-6 h-6" />
-              ) : (
-                <AiOutlineMenu className="w-6 h-6" />
-              )}
-            </motion.button>
-
-            {/* Auth Buttons */}
-            {!isAuthenticated ? (
-              <div className="hidden sm:flex gap-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/login"
-                    className="px-4 py-2 rounded-lg text-white hover:bg-gray-800/50 transition-colors font-semibold"
-                  >
-                    Login
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/register"
-                    className="px-5 py-2 rounded-xl whitespace-nowrap bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold transition-all "
-                  >
-                    Sign Up
-                  </Link>
-                </motion.div>
-              </div>
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-800/50 transition-colors text-white"
+          >
+            {isOpen ? (
+              <AiOutlineClose className="w-6 h-6" />
             ) : (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleLogout}
-                className="hidden sm:px-4 sm:py-2 sm:rounded-lg sm:bg-red-600/20 sm:hover:bg-red-600/40 sm:text-red-400 sm:font-semibold sm:transition-colors sm:inline-block"
-              >
-                Logout
-              </motion.button>
+              <AiOutlineMenu className="w-6 h-6" />
             )}
-          </div>
+          </motion.button>
         </div>
 
         {/* Mobile Menu */}
@@ -168,56 +117,21 @@ export default function Navbar() {
                     key={link.path}
                     to={link.path}
                     onClick={() => setIsOpen(false)}
-                    className={`block px-4 py-3 rounded-lg font-semibold transition-all ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg font-semibold transition-all ${
                       isActive(link.path)
                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
                         : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
                     }`}
                   >
+                    {link.icon}
                     {link.name}
+                    {link.badge && (
+                      <span className="ml-auto px-2 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 ))}
-
-                <div className="pt-4 border-t border-gray-700 space-y-2">
-                  {!isAuthenticated ? (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => setIsOpen(false)}
-                        className="block px-4 py-3 rounded-lg text-white hover:bg-gray-800/50 transition-colors font-semibold"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        to="/register"
-                        onClick={() => setIsOpen(false)}
-                        className="block px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold"
-                      >
-                        Sign Up
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/profile"
-                        onClick={() => setIsOpen(false)}
-                        className={`block px-4 py-3 rounded-lg font-semibold transition-all ${
-                          isActive('/profile')
-                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
-                            : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
-                        }`}
-                      >
-                        Profile
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400 font-semibold transition-colors"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  )}
-                </div>
               </div>
             </motion.div>
           )}

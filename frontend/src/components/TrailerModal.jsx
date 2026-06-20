@@ -63,26 +63,15 @@ export default function TrailerModal({ isOpen, trailer, movieTitle, onClose }) {
                 </h3>
               </div>
 
-              {/* Video Container */}
               <div className="relative w-full bg-black aspect-video">
-                {trailer.type === 'youtube' ? (
-                  <iframe
-                    src={getYouTubeEmbedUrl(trailer.url || trailer.videoKey)}
-                    title={`${movieTitle} Trailer`}
-                    className="w-full h-full"
-                    allowFullScreen
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  />
-                ) : (
-                  <video
-                    src={trailer.url}
-                    title={`${movieTitle} Trailer`}
-                    controls
-                    autoPlay
-                    className="w-full h-full"
-                  />
-                )}
+                <iframe
+                  src={`https://www.youtube.com/embed/${trailer.key || ''}?autoplay=1&rel=0`}
+                  title={`${movieTitle} Trailer`}
+                  className="w-full h-full"
+                  allowFullScreen
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
               </div>
 
               {/* Trailer Info */}

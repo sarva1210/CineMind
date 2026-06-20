@@ -28,10 +28,10 @@ export default function Search() {
     setError('');
     try {
       const res = await movieApi.searchMovies(searchQuery, 1);
-      setResults(res.movies || res);
+      setResults(res.movies || res.results || res);
       setHasSearched(true);
     } catch (err) {
-      setError(err.message || 'Search failed');
+      setError(typeof err === 'string' ? err : err?.message || 'Search failed');
       console.error('Search error:', err);
     } finally {
       setLoading(false);
@@ -139,7 +139,7 @@ export default function Search() {
           </motion.div>
         ) : results.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
               {results.map((movie, index) => (
                 <motion.div
                   key={movie.id}
@@ -147,7 +147,7 @@ export default function Search() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <MovieCard movie={movie} onFavoriteChange={() => performSearch(query)} />
+                  <MovieCard movie={movie} />
                 </motion.div>
               ))}
             </div>

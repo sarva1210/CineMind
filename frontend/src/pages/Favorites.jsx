@@ -1,49 +1,13 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import MovieCard from '../components/MovieCard';
-import Loader from '../components/Loader';
-import favoritesApi from '../services/api/favoritesApi';
-
+import { useSavedMovies } from '../context/SavedMoviesContext';
 
 export default function Favorites() {
-  const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const { user, isAuthenticated } = useAuth();
+  const { favorites, removeFavorite } = useSavedMovies();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    fetchFavorites();
-  }, [isAuthenticated, navigate]);
-
-  const fetchFavorites = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await favoritesApi.getFavorites(1);
-      setFavorites(res.movies || res);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch favorites');
-      console.error('Error fetching favorites:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  if (loading) return <Loader />;
-
-  
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-900/10 to-black pt-20">
       {/* Header */}
@@ -72,22 +36,12 @@ export default function Favorites() {
       </motion.section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-        {error && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="p-6 rounded-lg bg-red-600/20 border border-red-500/50 text-red-300 text-center mb-8"
-          >
-            {error}
-          </motion.div>
-        )}
-
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
         {favorites.length > 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
           >
             {favorites.map((movie, index) => (
               <motion.div
@@ -96,7 +50,7 @@ export default function Favorites() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <MovieCard movie={movie} onFavoriteChange={fetchFavorites} />
+                <MovieCard movie={movie} />
               </motion.div>
             ))}
           </motion.div>
@@ -104,18 +58,18 @@ export default function Favorites() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
+            className="text-center py-24"
           >
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="text-6xl mb-6"
+              className="text-7xl mb-6"
             >
               💔
             </motion.div>
             <h2 className="text-3xl font-bold text-white mb-4">No Favorites Yet</h2>
             <p className="text-gray-400 text-lg max-w-md mx-auto mb-8">
-              Start adding your favorite movies to your collection. Click the heart icon on any movie card!
+              Click the ❤️ icon on any movie card to save it here!
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
