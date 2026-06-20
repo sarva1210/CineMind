@@ -4,29 +4,34 @@ const movieApi = {
   // Get trending movies
   getTrending: async (page = 1, timeWindow = 'week') => {
     try {
-      const response = await axiosInstance.get('/movies/trending', {
-        params: { page, timeWindow },
-      });
+      const response = await axiosInstance.get('/movies/trending', { params: { page, timeWindow } });
       return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
-
 
   // Get popular movies
   getPopular: async (page = 1) => {
     try {
-      const response = await axiosInstance.get('/movies/popular', {
-        params: { page },
-      });
+      const response = await axiosInstance.get('/movies/popular', { params: { page } });
       return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
 
-  // Get movie by ID
+  // Get recommended movies
+  getRecommended: async (page = 1) => {
+    try {
+      const response = await axiosInstance.get('/movies/recommended', { params: { page } });
+      return response.data.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Get movie by ID (includes cast, trailer, where to watch)
   getMovieById: async (id) => {
     try {
       const response = await axiosInstance.get(`/movies/${id}`);
@@ -39,9 +44,7 @@ const movieApi = {
   // Search movies
   searchMovies: async (query, page = 1) => {
     try {
-      const response = await axiosInstance.get('/movies/search', {
-        params: { q: query, page },
-      });
+      const response = await axiosInstance.get('/movies/search', { params: { q: query, page } });
       return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
@@ -51,9 +54,7 @@ const movieApi = {
   // Get top rated movies
   getTopRated: async (page = 1) => {
     try {
-      const response = await axiosInstance.get('/movies/top-rated', {
-        params: { page },
-      });
+      const response = await axiosInstance.get('/movies/top-rated', { params: { page } });
       return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
@@ -70,11 +71,31 @@ const movieApi = {
     }
   },
 
-  // Get movie cast (from movie details)
-  getCast: async (movieId) => {
+  // Get person (actor/director) details + filmography
+  getPersonDetails: async (personId) => {
     try {
-      const response = await axiosInstance.get(`/movies/${movieId}`);
-      return response.data.data.credits || {};
+      const response = await axiosInstance.get(`/movies/person/${personId}`);
+      return response.data.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Get movies by genre
+  getMoviesByGenre: async (genreId, page = 1) => {
+    try {
+      const response = await axiosInstance.get('/movies/by-genre', { params: { genreId, page } });
+      return response.data.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Get all genres
+  getGenres: async () => {
+    try {
+      const response = await axiosInstance.get('/movies/genres');
+      return response.data.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }

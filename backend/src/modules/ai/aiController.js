@@ -1,67 +1,74 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const User = require('../user/userModel');
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// AI Chat - Get Movie Recommendations
+// AI Chat - Get Movie Recommendations based on mood, scene, or preferences
 const aiChat = async (req, res, next) => {
   try {
-    const { message } = req.body;
+    const { message, conversationHistory = [] } = req.body;
 
     if (!message) {
       return sendError(res, 400, 'Please provide a message');
     }
 
-    // Get user preferences
-    const user = await User.findById(req.user.userId);
-    const userGenres = user?.preferences?.genres?.join(', ') || 'any genres';
+    // Build conversation context
+    const historyText = conversationHistory
+      .slice(-6)
+      .map((m) => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`)
+      .join('\n');
 
-    // Create prompt for AI
-    const prompt = `You are a helpful movie recommendation assistant. Based on the user's preferences and request, suggest movies.
-User's favorite genres: ${userGenres}
-User's message: "${message}"
+    const prompt = `You are CineMind AI, a friendly and knowledgeable movie recommendation assistant. You help users discover movies based on their mood, favorite scenes, genres, actors, or any description they give.
 
-Please provide:
-1. 2-3 specific movie recommendations (with actual movie titles and years)
-2. A brief explanation why you recommend these movies
-3. Keep the response concise and friendly
+${historyText ? `Previous conversation:\n${historyText}\n\n` : ''}User's message: "${message}"
 
-Format your response as JSON with this structure:
+Instructions:
+- If the user describes a mood (e.g., "feeling sad", "want something fun"), recommend movies that match that mood
+- If the user describes a scene or plot element, recommend movies with similar scenes/themes
+- If the user asks about an actor/director, recommend their best works
+- Always recommend 3-5 specific movies with titles and years
+- Be conversational, warm, and enthusiastic about movies
+- Mention why each movie fits what they're looking for
+- Include a "where to watch" note when relevant (Netflix, Prime, etc.) if you know it
+
+Respond in this EXACT JSON format (no markdown, no extra text):
 {
-  "explanation": "Brief reason for recommendations",
+  "message": "Your friendly conversational response here, mentioning the movies naturally",
   "movies": [
     {
       "title": "Movie Title",
       "year": 2023,
-      "reason": "Why this movie"
+      "reason": "Why this movie fits their request",
+      "genre": "Genre",
+      "rating": 8.5
     }
-  ]
+  ],
+  "followUp": "An optional follow-up question to narrow down recommendations (or empty string)"
 }`;
 
-    // Call Gemini API
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent(prompt);
     const response = result.response;
-    const aiResponse = response.text();
+    const aiText = response.text();
 
     // Parse AI response
     let parsedResponse;
     try {
-      // Extract JSON from response
-      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      const jsonMatch = aiText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         parsedResponse = JSON.parse(jsonMatch[0]);
       } else {
         parsedResponse = {
-          explanation: aiResponse,
+          message: aiText,
           movies: [],
+          followUp: '',
         };
       }
     } catch (parseError) {
       parsedResponse = {
-        explanation: aiResponse,
+        message: aiText,
         movies: [],
+        followUp: '',
       };
     }
 
@@ -69,8 +76,10 @@ Format your response as JSON with this structure:
       res,
       200,
       {
-        message,
-        aiResponse: parsedResponse,
+        message: parsedResponse.message || 'Here are some recommendations for you!',
+        suggestedMovies: parsedResponse.movies || [],
+        followUp: parsedResponse.followUp || '',
+        conversationId: Date.now().toString(),
       },
       'AI recommendations generated'
     );
