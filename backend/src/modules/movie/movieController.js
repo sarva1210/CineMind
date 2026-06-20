@@ -1,6 +1,6 @@
+const https = require("https");
 const axios = require('axios');
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
-
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const IMG_BASE = 'https://image.tmdb.org/t/p';
@@ -8,15 +8,29 @@ const IMG_BASE = 'https://image.tmdb.org/t/p';
 // Helper function to fetch from TMDB
 const fetchFromTMDB = async (endpoint, params = {}) => {
   try {
-    const response = await axios.get(`${TMDB_BASE_URL}${endpoint}`, {
-      params: {
-        api_key: TMDB_API_KEY,
-        ...params,
-      },
-    });
+    const response = await axios.get(
+      `${TMDB_BASE_URL}${endpoint}`,
+      {
+        params: {
+          ...params,
+          api_key: process.env.TMDB_API_KEY,
+        },
+        httpsAgent: new https.Agent({
+          family: 4
+        })
+      }
+    );
+
     return response.data;
   } catch (error) {
-    throw new Error(`TMDB API Error: ${error.message}`);
+    console.log("====== TMDB ERROR ======");
+    console.log("Status:", error.response?.status);
+    console.log("Data:", error.response?.data);
+    console.log("Code:", error.code);
+    console.log("Message:", error.message);
+    console.log("========================");
+
+    throw error;
   }
 };
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 require('dotenv').config();
 
 // Import middleware
@@ -24,11 +25,53 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rate limiting
-app.use(apiLimiter); // General API rate limiting
+app.use(apiLimiter);
 
 // Health Check Route
 app.get('/health', (req, res) => {
-  res.json({ status: 'Server is running', timestamp: new Date() });
+  res.json({
+    status: 'Server is running',
+    timestamp: new Date(),
+  });
+});
+
+// TMDB Test Route
+app.get('/test-tmdb', async (req, res) => {
+  try {
+    const response = await fetch(
+      'https://api.themoviedb.org/3/authentication'
+    );
+
+    const data = await response.text();
+
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err) {
+    res.json({
+      success: false,
+      name: err.name,
+      message: err.message,
+      cause: err.cause,
+    });
+  }
+});
+
+app.get('/test-google', async (req, res) => {
+  try {
+    const response = await axios.get('https://www.google.com');
+
+    res.json({
+      success: true,
+      status: response.status,
+    });
+  } catch (err) {
+    res.json({
+      code: err.code,
+      message: err.message,
+    });
+  }
 });
 
 // API Routes

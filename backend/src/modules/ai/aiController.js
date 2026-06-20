@@ -46,7 +46,7 @@ Respond in this EXACT JSON format (no markdown, no extra text):
   "followUp": "An optional follow-up question to narrow down recommendations (or empty string)"
 }`;
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest'});
     const result = await model.generateContent(prompt);
     const response = result.response;
     const aiText = response.text();
