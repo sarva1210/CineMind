@@ -23,12 +23,11 @@ const fetchFromTMDB = async (endpoint, params = {}) => {
 
     return response.data;
   } catch (error) {
-    console.log("====== TMDB ERROR ======");
+    console.log("TMDB ERROR");
     console.log("Status:", error.response?.status);
     console.log("Data:", error.response?.data);
     console.log("Code:", error.code);
     console.log("Message:", error.message);
-    console.log("========================");
 
     throw error;
   }
